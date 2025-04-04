@@ -9,6 +9,7 @@ public class Libro {
     private String genero;
     private Boolean estado;
 
+
     // Atributos opcionales para manga y periodico
     private String estiloDibujo;
     private String ambientacion;
