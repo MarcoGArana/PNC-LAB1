@@ -1,6 +1,8 @@
 package org.example;
 
 import org.example.model.Libro;
+import org.example.model.Manga;
+import org.example.model.Periodico;
 import org.example.model.Prestamo;
 import org.example.repository.LibroRepository;
 
@@ -19,14 +21,10 @@ public class Main {
         Libro libro1 = new Libro("LC", "Cien Años de Soledad", "Gabriel García Márquez", "1967", "Realismo mágico", true);
         libroRepository.addLibro(libro1);
 
-        Libro manga1 = new Libro("MG", "Naruto", "Masashi Kishimoto", "1999", "Shonen", false);
-        manga1.setEstiloDibujo("Manga japonés");
-        manga1.setAmbientacion("Mundo ninja");
+        Manga manga1 = new Manga("MG", "Naruto", "Masashi Kishimoto", "1999", "Shonen", "Manga japonés", "Mundo ninja", false);
         libroRepository.addLibro(manga1);
 
-        Libro periodico1 = new Libro("PR", "The New York Times", "Varios", "2024", "Noticias", true);
-        periodico1.setEstiloPapel("Papel reciclado");
-        periodico1.setNumeroHojas(50);
+        Periodico periodico1 = new Periodico("PR", "The New York Times", "Varios", "2024", "Noticias","Papel reciclado", 50, true);
         libroRepository.addLibro(periodico1);
 
         Prestamo prestamo = new Prestamo("PR", "JOSE MIGUEL", 18, "00037822", "22/03/25", "25/05/25");
@@ -37,6 +35,7 @@ public class Main {
 
 
         do {
+            System.out.println("\n----------Menu de la biblioteca----------\n");
             option = scan.nextInt();
 
             switch (option){
@@ -60,7 +59,7 @@ public class Main {
                     libroRepository.detallesLibro();
                     break;
                 case 7:
-                    //TODO salir
+                    System.out.println("\nSaliendo del sistema...\n");
                     break;
                 default:
                     System.out.println("Ingrese una opcion valida");
