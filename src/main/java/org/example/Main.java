@@ -13,7 +13,8 @@ public class Main {
         int option;
         LibroRepository libroRepository = new LibroRepository();
 
-        /* DATOS DE PRUEBA:
+
+
 
         Libro libro1 = new Libro("LC", "Cien Años de Soledad", "Gabriel García Márquez", "1967", "Realismo mágico", true);
         libroRepository.addLibro(libro1);
@@ -33,7 +34,7 @@ public class Main {
         Prestamo prestamo2 = new Prestamo("LC", "JOSE MIGUEL", 20, "00037825", "22/07/28", "25/05/29");
         libroRepository.addPrestamo(prestamo2);
 
-        */
+
 
         do {
             option = scan.nextInt();
@@ -52,10 +53,11 @@ public class Main {
                     libroRepository.findDisponibles();
                     break;
                 case 5:
-                    //TODO prestar
+                    libroRepository.agregarPrestamo();
                     break;
                 case 6:
-                    //TODO ver detalle
+
+                    libroRepository.detallesLibro();
                     break;
                 case 7:
                     //TODO salir

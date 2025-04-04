@@ -3,6 +3,7 @@ package org.example.repository;
 import org.example.model.Libro;
 import org.example.model.Prestamo;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 public class LibroRepository {
@@ -130,6 +131,102 @@ public class LibroRepository {
     public void addPrestamo(Prestamo prestamo){
         prestamos.add(prestamo);
     }
+
+
+    public void agregarPrestamo(){
+        Libro myObject;
+        Boolean myStatus;
+
+
+        System.out.println("\n----------Estas a punto de hacer un prestamo----------\n");
+
+        System.out.println("Ingresa la identificacion del libro a prestar");
+        String identificacion = scan.nextLine();
+
+
+        if(findLibro(identificacion)!= null){
+            String dui = "";
+            myObject= findLibro(identificacion);
+            myStatus= myObject.getEstado();
+            if (myStatus == true){
+                System.out.println("El prestamo esta activo, no puede prestarlo");
+            } else {
+                System.out.println("Ingrese el nombre de la persona responsable");
+                String nombre = scan.nextLine();
+
+                System.out.println("Ingrese la edad de la persona responsable");
+                int edad = scan.nextInt();
+                scan.nextLine();
+
+                if (edad >= 18){System.out.println("Ingrese el DUI de la persona responsable");
+                   dui = scan.nextLine();
+                } else {
+                    System.out.println("Se ha asignado como DUI default 00000000-0");
+                   dui = "00000000-0";
+                }
+
+                System.out.println("Ingrese la fecha de inicio del prestamo");
+                String fechaInicio = scan.nextLine();
+
+                System.out.println("Ingrese la fecha de fin del prestamo");
+                String fechaFin = scan.nextLine();
+
+                Prestamo prestamo = new Prestamo(identificacion, nombre, edad, dui, fechaInicio, fechaFin);
+
+                addPrestamo(prestamo);
+                myObject.setEstado(true);
+            }
+
+        }
+
+
+
+
+    }
+
+    public Libro findLibro(String id){
+        Optional<Libro> myLibro ;
+        myLibro = libros.stream().filter(l -> l.getIdentificacion().equals(id)).findFirst();
+        if(myLibro.isPresent()){
+            Libro _libro = myLibro.get();
+            return _libro;
+        } else{
+            System.out.println("No se encontro el libro");
+            return null;
+        }
+
+    }
+
+    public void  detallesLibro(){
+        System.out.println("\n---------- Ingrese el id del libro que quiere obtener -----------\n");
+        String id = scan.nextLine();
+
+        if(findLibro(id)!= null){
+            Libro myLibro = findLibro(id);
+            String myIdentification = myLibro.getIdentificacion();
+            String myNombre= myLibro.getNombre();
+            String myAutor= myLibro.getAutor();
+            String myAnio= myLibro.getAnio();
+            String myGenero= myLibro.getGenero();
+            String myStatus = (myLibro.getEstado()) ? "Prestado" : "Disponible";;
+
+            System.out.println("----------------------------------------------------------------");
+            System.out.println("Id: " + myIdentification);
+            System.out.println("Nombre: " + myNombre);
+            System.out.println("Autor: " + myAutor);
+            System.out.println("Anio: " + myAnio);
+            System.out.println("Genero: " + myGenero);
+            System.out.println("Status (Prestado o no): " + myStatus);
+
+            
+        }
+
+
+
+
+
+    }
+
 
     //Para crear el libro y guardarlo en la lista
     public void agregarLibro(){
