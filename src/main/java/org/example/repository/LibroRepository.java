@@ -218,7 +218,7 @@ public class LibroRepository {
             System.out.println("Genero: " + myGenero);
             System.out.println("Status (Prestado o no): " + myStatus);
 
-            
+
         }
 
 
