@@ -137,46 +137,51 @@ public class LibroRepository {
         Libro myObject;
         Boolean myStatus;
 
-        String dui = "00000000-0";
 
         System.out.println("\n----------Estas a punto de hacer un prestamo----------\n");
 
         System.out.println("Ingresa la identificacion del libro a prestar");
         String identificacion = scan.nextLine();
 
-        System.out.println("Ingrese el nombre de la persona responsable");
-        String nombre = scan.nextLine();
-
-        System.out.println("Ingrese la edad de la persona responsable");
-        int edad = scan.nextInt();
-
-        if (edad < 18){
-            System.out.println("Ingrese el DUI de la persona responsable");
-             dui = scan.nextLine();
-        } else {
-
-        }
-
-        System.out.println("Ingrese la fecha de inicio del prestamo");
-        String fechaInicio = scan.nextLine();
-
-        System.out.println("Ingrese la fecha de fin del prestamo");
-        String fechaFin = scan.nextLine();
-
-        Prestamo prestamo = new Prestamo(identificacion, nombre, edad, dui, fechaInicio, fechaFin);
-
-
 
         if(findLibro(identificacion)!= null){
+            String dui = "";
             myObject= findLibro(identificacion);
             myStatus= myObject.getEstado();
-
             if (myStatus == true){
-               System.out.println("El prestamo esta activo, no puede prestarlo");
-           } else {
-               addPrestamo(prestamo);
-           }
+                System.out.println("El prestamo esta activo, no puede prestarlo");
+            } else {
+                System.out.println("Ingrese el nombre de la persona responsable");
+                String nombre = scan.nextLine();
+
+                System.out.println("Ingrese la edad de la persona responsable");
+                int edad = scan.nextInt();
+                scan.nextLine();
+
+                if (edad >= 18){System.out.println("Ingrese el DUI de la persona responsable");
+                   dui = scan.nextLine();
+                } else {
+                    System.out.println("Se ha asignado como DUI default 00000000-0");
+                   dui = "00000000-0";
+                }
+
+                System.out.println("Ingrese la fecha de inicio del prestamo");
+                String fechaInicio = scan.nextLine();
+
+                System.out.println("Ingrese la fecha de fin del prestamo");
+                String fechaFin = scan.nextLine();
+
+                Prestamo prestamo = new Prestamo(identificacion, nombre, edad, dui, fechaInicio, fechaFin);
+
+                addPrestamo(prestamo);
+                myObject.setEstado(true);
+            }
+
         }
+
+
+
+
     }
 
     public Libro findLibro(String id){
@@ -203,7 +208,7 @@ public class LibroRepository {
             String myAutor= myLibro.getAutor();
             String myAnio= myLibro.getAnio();
             String myGenero= myLibro.getGenero();
-            String myStatus = myLibro.getEstado().toString();
+            String myStatus = (myLibro.getEstado()) ? "Prestado" : "Disponible";;
 
             System.out.println("----------------------------------------------------------------");
             System.out.println("Id: " + myIdentification);
@@ -212,6 +217,8 @@ public class LibroRepository {
             System.out.println("Anio: " + myAnio);
             System.out.println("Genero: " + myGenero);
             System.out.println("Status (Prestado o no): " + myStatus);
+
+            
         }
 
 

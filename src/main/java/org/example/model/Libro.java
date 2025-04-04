@@ -64,5 +64,7 @@ public class Libro {
     public void setNumeroHojas(Integer numeroHojas) {
         this.numeroHojas = numeroHojas;
     }
+
+    public void setEstado(Boolean estado) {this.estado = estado;}
 }
 
