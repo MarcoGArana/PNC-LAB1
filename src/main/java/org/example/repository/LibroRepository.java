@@ -12,6 +12,7 @@ public class LibroRepository {
     private List<Prestamo> prestamos = new ArrayList<>();
     private static final Scanner scan = new Scanner(System.in);
 
+    //Metodo para generar el identificador de un libro
     private String generarIdentificacion(int tipo){
         String id = "";
         Random random = new Random();
@@ -43,6 +44,7 @@ public class LibroRepository {
         return id;
     }
 
+    //Metodo para mostrar todos los libros de la lista
     public void findAll(){
         System.out.println("\n----------Inventario de libros----------\n");
         for(Libro libro : libros){
@@ -51,15 +53,18 @@ public class LibroRepository {
         }
     }
 
+    //Metodo para mostrar los datos de un prestamo
     public void findPrestados(){
         Optional<Libro> libroPrestado;
         System.out.println("\n----------Libros prestados----------\n");
         for(Prestamo prestamo : prestamos){
+            //En base a la identificacion filtramos y obtenemos el nombre del libro
             libroPrestado =
                     libros.stream()
-                            .filter(l -> Objects.equals(l.getIdentificacion(), prestamo.getIdentificacion()))
+                            .filter(l -> l.getIdentificacion().equals(prestamo.getIdentificacion()))
                             .findFirst();
             if(libroPrestado.isPresent()){
+                //En caso exista el libro, mostramos el titulo y los detalles del prestamo
                 Libro _libro = libroPrestado.get();
                 System.out.println("Titulo del libro: " + _libro.getNombre());
                 prestamo.printPrestamoDetails();
@@ -68,6 +73,7 @@ public class LibroRepository {
         }
     }
 
+    //Este metodo filtra en base al estado y muestra los libros disponibles
     public void findDisponibles(){
         List<Libro> librosDisponibles = libros.stream().filter(l -> !l.getEstado()).toList();
 
@@ -83,6 +89,7 @@ public class LibroRepository {
         libros.add(libro);
     }
 
+    //Para agregar un prestamo a la lista
     public void addPrestamo(Prestamo prestamo){
         prestamos.add(prestamo);
     }
@@ -133,12 +140,16 @@ public class LibroRepository {
         }
     }
 
+    //Metodo para encontrar un libro por su identificador
     public Libro findLibro(String id){
         Optional<Libro> myLibro ;
+
+        //Filtramos la lista de libros hasta encontrar el que tenga el id correspondiente
         myLibro = libros.stream().filter(l -> l.getIdentificacion().equals(id)).findFirst();
+
+        //Si el libro existe, lo retornamos
         if(myLibro.isPresent()){
-            Libro _libro = myLibro.get();
-            return _libro;
+            return myLibro.get();
         } else{
             System.out.println("No se encontro el libro");
             return null;
@@ -146,27 +157,32 @@ public class LibroRepository {
 
     }
 
+    //Metodo para obtener toda la informacion de un libro
     public void  detallesLibro(){
         System.out.println("\n---------- Ingrese el id del libro que quiere obtener -----------\n");
         String id = scan.nextLine();
+        //Buscamos el libro en base al id
+        Libro myLibro = findLibro(id);
 
-        if(findLibro(id)!= null){
-            Libro myLibro = findLibro(id);
+        //Si el libro existe, mostramos sus datos
+        if(myLibro != null){
             System.out.println("----------------------------------------------------------------");
             myLibro.printDetails();
         }
     }
 
 
-    //Para crear el libro y guardarlo en la lista
+    //Metodo para crear el libro y guardarlo en la lista
     public void agregarLibro(){
         System.out.println("\n----------Agregar libro----------\n");
 
+        //Se obtiene el tipo de libro que el usuario quiera agregar
         System.out.println("Que tipo de libro desea agregar?");
         System.out.println("1. Manga, 2. Periodico, 3. Convencional\n");
         int tipo = scan.nextInt();
         scan.nextLine();
 
+        //Se recopilan los datos nesesarios para registrar el libro
         System.out.println("Ingrese el nombre del libro");
         String nombre = scan.nextLine();
 
@@ -179,33 +195,39 @@ public class LibroRepository {
         System.out.println("Ingrese el genero del libro");
         String genero = scan.nextLine();
 
+        //Se genera el identificador del libro en base al tipo que sea
         String identifier = generarIdentificacion(tipo);
 
         switch (tipo){
             case 1:
                 //Manga
+                //Obtenemos los datos adicionales para este tipo de libro
                 System.out.println("Ingrese el estilo de dibujo");
                 String estilo = scan.nextLine();
 
                 System.out.println("Ingrese la ambientacion del libro");
                 String ambientacion = scan.nextLine();
 
+                //Creamos y añadimos el libro a la lista de libros
                 Manga nuevoManga = new Manga(identifier, nombre, autor, anio, genero, estilo, ambientacion, false);
                 addLibro(nuevoManga);
                 break;
             case 2:
                 //Periodico
+                //Obtenemos los datos adicionales para este tipo de libro
                 System.out.println("Ingrese el estilo de papel");
                 String estiloPapel = scan.nextLine();
 
                 System.out.println("Ingrese el numero de hojas del libro");
                 Integer numHojas = scan.nextInt();
 
+                //Creamos y añadimos el libro a la lista de libros
                 Periodico nuevoPeriodico = new Periodico(identifier, nombre, autor, anio, genero, estiloPapel, numHojas, false);
                 addLibro(nuevoPeriodico);
                 break;
             case 3:
                 //Libro convencional
+                //Creamos y añadimos el libro a la lista de libros
                 Libro nuevoLibro = new Libro(identifier, nombre, autor, anio, genero, false);
                 addLibro(nuevoLibro);
                 break;

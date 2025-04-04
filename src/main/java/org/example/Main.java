@@ -36,6 +36,14 @@ public class Main {
 
         do {
             System.out.println("\n----------Menu de la biblioteca----------\n");
+            System.out.println("1. Agregar un libro al inventario");
+            System.out.println("2. Mostrar todos los libros en el inventario");
+            System.out.println("3. Mostrar los libros en estado de prestamo");
+            System.out.println("4. Mostrar los libros disponibles");
+            System.out.println("5. Realizar un prestamo");
+            System.out.println("6. Mostrar los detalles de un libro");
+            System.out.println("7. Salir del sistema\n");
+            System.out.print("Opcion: ");
             option = scan.nextInt();
 
             switch (option){
@@ -55,7 +63,6 @@ public class Main {
                     libroRepository.agregarPrestamo();
                     break;
                 case 6:
-
                     libroRepository.detallesLibro();
                     break;
                 case 7:
