@@ -1,15 +1,20 @@
 package org.example.repository;
 
 import org.example.model.Libro;
+import org.example.model.Manga;
+import org.example.model.Periodico;
 import org.example.model.Prestamo;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.util.*;
+import java.time.format.DateTimeFormatter;
 
 public class LibroRepository {
     private List<Libro> libros = new ArrayList<>();
     private List<Prestamo> prestamos = new ArrayList<>();
     private static final Scanner scan = new Scanner(System.in);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private String generarIdentificacion(int tipo){
         String id = "";
@@ -146,6 +151,7 @@ public class LibroRepository {
 
         if(findLibro(identificacion)!= null){
             String dui = "";
+            String fechaFin = "";
             myObject= findLibro(identificacion);
             myStatus= myObject.getEstado();
             if (myStatus == true){
@@ -158,18 +164,46 @@ public class LibroRepository {
                 int edad = scan.nextInt();
                 scan.nextLine();
 
-                if (edad >= 18){System.out.println("Ingrese el DUI de la persona responsable");
-                   dui = scan.nextLine();
+                if (edad >= 18){
+
+                    do {
+                        System.out.println("Ingrese el DUI de la persona responsable");
+                        String allegedDUI = scan.nextLine();
+                        if(checkDUI(allegedDUI) == true){
+                            dui=allegedDUI;
+                        } else {
+                            System.out.println("--\n Ha ingresado un numero de DUI invalido, intente de nuevo");
+                            System.out.println("----------------------------------------------------------");
+
+                        };
+                    } while (dui.equals(""));
+
+
                 } else {
-                    System.out.println("Se ha asignado como DUI default 00000000-0");
+                    System.out.println("\n--Se asigno el DUI default para menores de edad 00000000-0 ");
                    dui = "00000000-0";
                 }
 
-                System.out.println("Ingrese la fecha de inicio del prestamo");
+                System.out.println("Ingrese la fecha de inicio del prestamo: formato DD-MM-YYYY");
                 String fechaInicio = scan.nextLine();
 
-                System.out.println("Ingrese la fecha de fin del prestamo");
-                String fechaFin = scan.nextLine();
+
+                do {
+                    System.out.println("Ingrese la fecha de fin del prestamo: formato DD-MM-YYYY");
+                    String fechaFinEsperada = scan.nextLine();
+                    LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
+                    LocalDate fin = LocalDate.parse(fechaFinEsperada, formatter);
+                    if (fin.isBefore(inicio) ){
+                        System.out.println("\n--La fecha de fin es antes de la de inicio de prestamo, intente de nuevo-- ");
+                        System.out.println("-----------------------------------------------------------------------------");
+
+                    } else {
+                        fechaFin = fechaFinEsperada;
+                    }
+                } while(fechaFin.isEmpty());
+                ;
+
+
 
                 Prestamo prestamo = new Prestamo(identificacion, nombre, edad, dui, fechaInicio, fechaFin);
 
@@ -218,7 +252,8 @@ public class LibroRepository {
             System.out.println("Genero: " + myGenero);
             System.out.println("Status (Prestado o no): " + myStatus);
 
-
+            myLibro.printDetails();
+            
         }
 
 
@@ -251,7 +286,6 @@ public class LibroRepository {
 
         String identifier = generarIdentificacion(tipo);
 
-        Libro nuevoLibro = new Libro(identifier, nombre, autor, anio, genero, false);
 
         switch (tipo){
             case 1:
@@ -262,8 +296,13 @@ public class LibroRepository {
                 System.out.println("Ingrese la ambientacion del libro");
                 String ambientacion = scan.nextLine();
 
-                nuevoLibro.setEstiloDibujo(estilo);
-                nuevoLibro.setAmbientacion(ambientacion);
+                Manga nuevoManga = new Manga(identifier, nombre, autor, anio, genero, estilo, ambientacion, false);
+                addLibro(nuevoManga);
+
+
+
+
+
                 break;
             case 2:
                 //Periodico
@@ -272,14 +311,32 @@ public class LibroRepository {
 
                 System.out.println("Ingrese el numero de hojas del libro");
                 Integer numHojas = scan.nextInt();
+                scan.nextLine();
 
-                nuevoLibro.setEstiloPapel(estiloPapel);
-                nuevoLibro.setNumeroHojas(numHojas);
+                Periodico nuevoPeriodico = new Periodico(identifier, nombre, autor, anio, genero, estiloPapel, numHojas, false);
+                addLibro(nuevoPeriodico);
                 break;
+            case 3:
+                Libro nuevoLibro = new Libro(identifier, nombre, autor, anio, genero, false);
+                addLibro(nuevoLibro);
+
             default:
                 break;
         }
-        addLibro(nuevoLibro);
         System.out.println("\n----------Libro guardado exitosamente----------\n");
     }
+
+    public Boolean checkDUI(String DUI){
+        if(DUI.length()!=10){
+            return false;
+        } else {
+           if (DUI.matches("\\d{8}-\\d")){
+               return true;
+        } else {
+               return false;
+           }
+                }
+
+         }
+
 }
