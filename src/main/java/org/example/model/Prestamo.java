@@ -21,47 +21,31 @@ public class Prestamo {
         return identificacion;
     }
 
-    public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
-    }
-
     public String getNombrePersona() {
         return nombrePersona;
-    }
-
-    public void setNombrePersona(String nombrePersona) {
-        this.nombrePersona = nombrePersona;
     }
 
     public Integer getEdad() {
         return edad;
     }
 
-    public void setEdad(Integer edad) {
-        this.edad = edad;
-    }
-
     public String getDUI() {
         return DUI;
-    }
-
-    public void setDUI(String DUI) {
-        this.DUI = DUI;
     }
 
     public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
     public String getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
+    public void printPrestamoDetails(){
+        System.out.println("Identificador: " + identificacion);
+        System.out.println("Nombre del prestatario: " + nombrePersona);
+        System.out.println("Fecha de inicio: " + fechaInicio);
+        System.out.println("Fecha de fin: " + fechaFin);
+        System.out.println("Identificacion del prestatario: " + DUI);
     }
 }

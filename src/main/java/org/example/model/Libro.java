@@ -1,7 +1,6 @@
 package org.example.model;
 
 public class Libro {
-    //Atributos comunes
     private String identificacion;
     private String nombre;
     private String autor;
@@ -9,12 +8,14 @@ public class Libro {
     private String genero;
     private Boolean estado;
 
-
-    // Atributos opcionales para manga y periodico
-    private String estiloDibujo;
-    private String ambientacion;
-    private String estiloPapel;
-    private Integer numeroHojas;
+    public Libro(String identificacion, String nombre, String autor, String anio, String genero, Boolean estado) {
+        this.identificacion = identificacion;
+        this.nombre = nombre;
+        this.autor = autor;
+        this.anio = anio;
+        this.genero = genero;
+        this.estado = estado;
+    }
 
     public String getIdentificacion() {
         return identificacion;
@@ -40,31 +41,44 @@ public class Libro {
         return estado;
     }
 
-    public Libro(String identificacion, String nombre, String autor, String anio, String genero, Boolean estado) {
-        this.identificacion = identificacion;
-        this.nombre = nombre;
-        this.autor = autor;
-        this.anio = anio;
-        this.genero = genero;
-        this.estado = estado;
-    }
-
-    public void setEstiloDibujo(String estiloDibujo) {
-        this.estiloDibujo = estiloDibujo;
-    }
-
-    public void setAmbientacion(String ambientacion) {
-        this.ambientacion = ambientacion;
-    }
-
-    public void setEstiloPapel(String estiloPapel) {
-        this.estiloPapel = estiloPapel;
-    }
-
-    public void setNumeroHojas(Integer numeroHojas) {
-        this.numeroHojas = numeroHojas;
-    }
-
     public void setEstado(Boolean estado) {this.estado = estado;}
+
+    public void printDetails() {
+        switch (identificacion.charAt(0)){
+            case 'L':
+                System.out.println("Tipo: Convencional");
+                break;
+            case 'M':
+                System.out.println("Tipo: Manga");
+                break;
+            case 'P':
+                System.out.println("Tipo: Periodico");
+                break;
+            default:
+                break;
+        }
+
+
+    }
+
+    public void printBasics(){
+        switch (identificacion.charAt(0)){
+            case 'L':
+                System.out.println("Tipo: Convencional");
+                break;
+            case 'M':
+                System.out.println("Tipo: Manga");
+                break;
+            case 'P':
+                System.out.println("Tipo: Periodico");
+                break;
+            default:
+                break;
+        }
+        System.out.println("id: " + identificacion);
+        System.out.println("Titulo: " + nombre);
+        System.out.println("Autor: " + autor);
+        System.out.println("Estado: " + (!estado ? "Disponible" : "No disponible"));
+    }
 }
 
